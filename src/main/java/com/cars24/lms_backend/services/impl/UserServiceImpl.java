@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -53,11 +56,14 @@ public class UserServiceImpl implements UserService {
         Optional<UsersEntity> existingUser = userDao.findByUsernameDao(user.getUsername());
 
         if (existingUser.isPresent()) {
-            String actualPassword = existingUser.get().getPassword();
+
 
             // Validate the password
             if ( passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
-                return generateApiResponse(HttpStatus.OK.value(), true, "User Logged in successfully",jwtUtil.generateToken(user.getUsername()) ,"APPUSER");
+                String token = jwtUtil.generateToken(user.getUsername());
+                Map<String, Object> responseData = new HashMap<>();
+                responseData.put("token", token);
+                return generateApiResponse(HttpStatus.OK.value(), true, "User Logged in successfully",responseData ,"APPUSER");
             } else {
                 throw new RuntimeException("Invalid Username or Password");
             }

@@ -22,8 +22,6 @@ public class UserDetailsEntityServicesImpl implements UserDetailsEntityServices 
     @Override
     public UserDetailsResponse getUserDetailsService(String userId) {
         //it should call a function in dao
-
-
         return userDetailsDao.getUserDetailsDao(userId);
     }
 
