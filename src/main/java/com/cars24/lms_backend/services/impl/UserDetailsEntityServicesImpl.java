@@ -5,7 +5,7 @@ import com.cars24.lms_backend.data.entities.UserDetailsEntity;
 import com.cars24.lms_backend.data.req.CreateUserDetailsRequest;
 import com.cars24.lms_backend.data.res.ApiResponse;
 import com.cars24.lms_backend.data.res.UserDetailsResponse;
-import com.cars24.lms_backend.services.UserDetailsServices;
+import com.cars24.lms_backend.services.UserDetailsEntityServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailsServicesImpl implements UserDetailsServices {
+public class UserDetailsEntityServicesImpl implements UserDetailsEntityServices {
 
 
     private final UserDetailsDaoImpl userDetailsDao;
