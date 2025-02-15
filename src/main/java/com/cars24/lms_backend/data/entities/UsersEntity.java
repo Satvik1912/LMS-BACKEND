@@ -15,7 +15,7 @@ import java.util.Set;
 public class UsersEntity {
 
     @Id
-    private String Id;
+    private String id;
 
     private String name;
 

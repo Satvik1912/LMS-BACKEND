@@ -1,4 +1,4 @@
-package com.cars24.lms_backend.services;
+package com.cars24.lms_backend.services.impl;
 
 
 import com.cars24.lms_backend.data.entities.UsersEntity;

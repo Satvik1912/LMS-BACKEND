@@ -60,9 +60,11 @@ public class UserServiceImpl implements UserService {
 
             // Validate the password
             if ( passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
+                String userId= existingUser.get().getId();
                 String token = jwtUtil.generateToken(user.getUsername());
                 Map<String, Object> responseData = new HashMap<>();
                 responseData.put("token", token);
+                responseData.put("userId",userId);
                 return generateApiResponse(HttpStatus.OK.value(), true, "User Logged in successfully",responseData ,"APPUSER");
             } else {
                 throw new RuntimeException("Invalid Username or Password");

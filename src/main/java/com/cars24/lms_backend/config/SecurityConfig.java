@@ -2,7 +2,7 @@ package com.cars24.lms_backend.config;
 
 
 import com.cars24.lms_backend.filter.JwtAuthenticationFilter;
-import com.cars24.lms_backend.services.UserDetailsServiceImpl;
+import com.cars24.lms_backend.services.impl.UserDetailsServiceImpl;
 import com.cars24.lms_backend.utility.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

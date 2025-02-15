@@ -6,6 +6,6 @@ import com.cars24.lms_backend.data.res.UserDetailsResponse;
 
 public interface UserDetailsEntityServices {
 
-    UserDetailsResponse getUserDetailsService(String userId);
+    ApiResponse getUserDetailsService(String userId);
     ApiResponse createUserDetailsService(CreateUserDetailsRequest userDetailsRequest);
 }

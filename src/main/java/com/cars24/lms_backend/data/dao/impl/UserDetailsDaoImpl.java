@@ -2,9 +2,12 @@ package com.cars24.lms_backend.data.dao.impl;
 
 import com.cars24.lms_backend.data.dao.UserDetailsDao;
 import com.cars24.lms_backend.data.entities.UserDetailsEntity;
+import com.cars24.lms_backend.data.entities.UsersEntity;
 import com.cars24.lms_backend.data.repositories.UserDetailsRepository;
+import com.cars24.lms_backend.data.repositories.UserRepository;
 import com.cars24.lms_backend.data.req.CreateUserDetailsRequest;
 import com.cars24.lms_backend.data.res.UserDetailsResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,38 +18,34 @@ import java.util.Optional;
 public class UserDetailsDaoImpl implements UserDetailsDao {
 
     private final UserDetailsRepository userDetailsRepository;
+    private final UserRepository userRepo;
 
     @Override
     public UserDetailsResponse getUserDetailsDao(String userId) {
+
         UserDetailsEntity userDetailsEntity=userDetailsRepository.findByUserId(userId);
-        UserDetailsResponse userDetailsResponse=new UserDetailsResponse();
-        userDetailsResponse.setUserId(userDetailsEntity.getUserId());
-        userDetailsResponse.setAadhar(userDetailsEntity.getAadhar());
-        userDetailsResponse.setAddress(userDetailsEntity.getAddress());
-        userDetailsResponse.setCollateral(userDetailsEntity.getCollateral());
-        userDetailsResponse.setPanNo(userDetailsEntity.getPanNo());
-        userDetailsResponse.setIncomeSource(userDetailsEntity.getIncomeSource());
-        userDetailsResponse.setSalary(userDetailsEntity.getSalary());
-        userDetailsResponse.setIncomeType(userDetailsEntity.getIncomeType());
-        userDetailsResponse.setId(userDetailsEntity.getId());
-        return userDetailsResponse;
+
+        ObjectMapper objectMapper =new ObjectMapper();
+        return objectMapper.convertValue(userDetailsEntity, UserDetailsResponse.class);
     }
 
     @Override
     public UserDetailsEntity createUserDetailsDao(CreateUserDetailsRequest userDetailsRequest) {
 
-        UserDetailsEntity userDetails=new UserDetailsEntity();
+        // I have to check if userId exists in user collection
+        //also we have to ensure that we don't insert multiple documents of same user (to be implemented later)
 
-        userDetails.setUserId(userDetailsRequest.getUserId());
-        userDetails.setAddress(userDetailsRequest.getAddress());
-        userDetails.setPanNo(userDetailsRequest.getPanNo());
-        userDetails.setAadhar(userDetailsRequest.getAadhar());
-        userDetails.setIncomeSource(userDetailsRequest.getIncomeSource());
-        userDetails.setIncomeType(userDetailsRequest.getIncomeType());
-        userDetails.setSalary(userDetailsRequest.getSalary());
-        userDetails.setCollateral(userDetailsRequest.getCollateral());
-        userDetails.setDocuments(new String[0]);
+        Optional<UsersEntity> user = userRepo.findById(userDetailsRequest.getUserId());
 
-        return userDetailsRepository.save(userDetails);
+        if(user.isPresent()){
+
+            ObjectMapper objectMapper =new ObjectMapper();
+            UserDetailsEntity userDetails = objectMapper.convertValue(userDetailsRequest,UserDetailsEntity.class);
+            userDetails.setDocuments(new String[0]);
+
+            return userDetailsRepository.save(userDetails);
+        }else{
+            throw new RuntimeException("User doesn't exists");
+        }
     }
 }

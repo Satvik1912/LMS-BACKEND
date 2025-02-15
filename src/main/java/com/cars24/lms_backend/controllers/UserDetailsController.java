@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/userDetails")
+@RequestMapping("/user-details")
 @RequiredArgsConstructor
 @Service
 public class UserDetailsController {
@@ -19,14 +19,14 @@ public class UserDetailsController {
     private final UserDetailsEntityServicesImpl userDetailsServices;
 
 
-    @GetMapping("/getUser/{userId}")
-    public ResponseEntity<UserDetailsResponse> getDetails(@PathVariable String userId){
-        UserDetailsResponse serviceLayer=  userDetailsServices.getUserDetailsService(userId);
-        return ResponseEntity.ok().body(serviceLayer);
+    @GetMapping("/get-user/{userId}")
+    public ResponseEntity<ApiResponse> getDetails(@PathVariable String userId){
+        ApiResponse getUserEntityDetails=  userDetailsServices.getUserDetailsService(userId);
+        return ResponseEntity.ok().body(getUserEntityDetails);
     }
 
 
-    @PostMapping("/addDetails")
+    @PostMapping("/add-details")
     public ResponseEntity<ApiResponse> createUserDetails(@RequestBody CreateUserDetailsRequest userDetailsRequest){
         ApiResponse createUserDetailsResponse=userDetailsServices.createUserDetailsService(userDetailsRequest);
         return ResponseEntity.ok().body(createUserDetailsResponse);
