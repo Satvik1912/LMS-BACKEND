@@ -25,32 +25,38 @@ public class BankDetailsServiceImpl implements BankDetailsService {
 
     @Override
     public ResponseEntity<ApiResponse> createBankDetails(@Valid BankDetailsRequest request) {
-
         if (userRepository.existsByUserId(request.getUserId())) {
             try {
                 bankDetailsDao.save(request);
 
-                ApiResponse response = new ApiResponse();
-                response.setStatusCode(HttpStatus.CREATED.value());
-                response.setMessage("Bank details added successfully");
-                response.setService("APPUSR-" + HttpStatus.CREATED.value());
-                response.setSuccess("TRUE");
-                response.setData(null);
+                ApiResponse response = new ApiResponse(
+                        HttpStatus.CREATED.value(),
+                        "Bank details added successfully",
+                        "APPUSR-" + HttpStatus.CREATED.value(),
+                        true,
+                        null
+                );
 
                 return ResponseEntity.status(HttpStatus.CREATED).body(response);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        .body(new ApiResponse(
+                                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                 "An error occurred while saving bank details: " + e.getMessage(),
                                 "APPUSR-" + HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                                false, null));
+                                false,
+                                null
+                        ));
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse(HttpStatus.BAD_REQUEST.value(),
+                    .body(new ApiResponse(
+                            HttpStatus.BAD_REQUEST.value(),
                             "User ID does not exist",
                             "APPUSR-" + HttpStatus.BAD_REQUEST.value(),
-                            false, null));
+                            false,
+                            null
+                    ));
         }
     }
 
@@ -60,36 +66,42 @@ public class BankDetailsServiceImpl implements BankDetailsService {
             try {
                 Optional<BankDetailsEntity> bankDetails = bankDetailsDao.get(userId);
                 if (bankDetails.isPresent()) {
-                    ApiResponse response = new ApiResponse();
-                    response.setStatusCode(HttpStatus.OK.value());
-                    response.setMessage("Bank details fetched successfully");
-                    response.setService("APPUSR-" + HttpStatus.OK.value());
-                    response.setSuccess("TRUE");
-                    response.setData(bankDetails.get());
-
-                    return ResponseEntity.status(HttpStatus.OK).body(response);
+                    return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(
+                            HttpStatus.OK.value(),
+                            "Bank details fetched successfully",
+                            "APPUSR-" + HttpStatus.OK.value(),
+                            true,
+                            bankDetails.get()
+                    ));
                 } else {
                     return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                            .body(new ApiResponse(HttpStatus.NOT_FOUND.value(),
+                            .body(new ApiResponse(
+                                    HttpStatus.NOT_FOUND.value(),
                                     "No bank details found for this user",
                                     "APPUSR-" + HttpStatus.NOT_FOUND.value(),
-                                    false, null));
+                                    false,
+                                    null
+                            ));
                 }
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ApiResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        .body(new ApiResponse(
+                                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                                 "An error occurred while fetching bank details: " + e.getMessage(),
                                 "APPUSR-" + HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                                false, null));
+                                false,
+                                null
+                        ));
             }
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse(HttpStatus.BAD_REQUEST.value(),
+                    .body(new ApiResponse(
+                            HttpStatus.BAD_REQUEST.value(),
                             "User ID does not exist",
                             "APPUSR-" + HttpStatus.BAD_REQUEST.value(),
-                            false, null));
+                            false,
+                            null
+                    ));
         }
     }
-
 }
-

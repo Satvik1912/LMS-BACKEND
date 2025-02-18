@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class UserDetailsResponse {
 
-    private String id;
+    private String udId;
 
     private String userId;
 
@@ -24,4 +24,8 @@ public class UserDetailsResponse {
     private String collateral;
 
     private String[] documents;
+    private double principalAmount;
+    private int tenure;
+    private double interest;
+
 }

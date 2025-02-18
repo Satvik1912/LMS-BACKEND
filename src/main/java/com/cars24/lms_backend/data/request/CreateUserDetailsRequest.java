@@ -14,5 +14,8 @@ public class CreateUserDetailsRequest {
     private String incomeType;
     private int salary;
     private String collateral;
+    private double principalAmount;
+    private int tenure;
+    private double interest;
 
 }

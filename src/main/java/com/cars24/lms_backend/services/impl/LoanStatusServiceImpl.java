@@ -41,7 +41,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
                     .orElseThrow(() -> new RuntimeException("User not found with udId: " + request.getUdId()));
 
             // Calculate loan amount
-            double principalAmount = user.getPrincipalamount();
+            double principalAmount = user.getPrincipalAmount();
             double loanAmount = principalAmount + (principalAmount * user.getInterest() * user.getTenure()) / 100;
 
             // Create and save LoanStatusEntity

@@ -3,16 +3,14 @@ package com.cars24.lms_backend.data.entities;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import jakarta.validation.constraints.*;
-
 
 @Document(collection = "user_details")
 @Data
 public class UserDetailsEntity {
 
     @Id
-    private  String udId;  // Auto-generate unique ID
+    private String udId;  // Auto-generate unique ID
 
     @NotNull(message = "User ID cannot be null")
     private String userId;
@@ -38,4 +36,14 @@ public class UserDetailsEntity {
     private String collateral;
 
     private String[] documents;
+
+    @Min(value = 50000, message = "Principal amount must be at least 50,000")
+    private double principalAmount;
+
+    @Min(value = 1, message = "Tenure must be at least 1 year")
+    private int tenure;
+
+    @DecimalMin(value = "0.1", message = "Interest rate must be greater than 0%")
+    @DecimalMax(value = "100.0", message = "Interest rate cannot exceed 100%")
+    private double interest;
 }

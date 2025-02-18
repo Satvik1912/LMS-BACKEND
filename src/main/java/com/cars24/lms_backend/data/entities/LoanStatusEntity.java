@@ -17,13 +17,12 @@ public class LoanStatusEntity {
 
     @Id
     private String id; // MongoDB will generate the unique ID automatically
-
+    @Field("udId")
     private String udId;
     @Field("userId")
     private String userId;
 
     @Field("loanAmount")
-    @Min(value = 50000, message= "AMOUNT IS TOO LESS")
     private double loanAmount;
 
     @Field("loanStatus")
