@@ -1,4 +1,4 @@
-package com.cars24.lms_backend.data.enitities;
+package com.cars24.lms_backend.data.entities;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.*;
 public class UserDetailsEntity {
 
     @Id
-    private  String udId;  // Auto-generate unique ID
+    private  String id;  // Auto-generate unique ID
 
     @NotNull(message = "User ID cannot be null")
     private String userId;
