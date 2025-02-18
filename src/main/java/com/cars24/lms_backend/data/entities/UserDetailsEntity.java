@@ -1,9 +1,10 @@
 package com.cars24.lms_backend.data.entities;
 
-import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.validation.constraints.*;
 
 
 @Document(collection = "user_details")
@@ -35,15 +36,6 @@ public class UserDetailsEntity {
     private int salary;
 
     private String collateral;
-
-    @NotBlank(message = "Tenure is required in years")
-    private int tenure;
-
-    @NotBlank(message = "Amount is required")
-    private int principalamount;
-
-    @NotBlank(message = "Interest is required")
-    private int interest;
 
     private String[] documents;
 }
