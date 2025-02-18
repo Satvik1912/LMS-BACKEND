@@ -7,6 +7,7 @@ import jakarta.validation.constraints.*;
 
 @Document(collection = "user_details")
 @Data
+
 public class UserDetailsEntity {
 
     @Id

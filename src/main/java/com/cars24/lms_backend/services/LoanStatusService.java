@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @Validated
 public interface LoanStatusService {
-    ResponseEntity<ApiResponse> createLoanStatus(@Valid LoanStatusRequest request);
+    ResponseEntity<ApiResponse> createLoanStatus(@Valid String udId);
     List<LoanStatusResponse> getLoanStatusByUserId(String userId);
 
     ResponseEntity<ApiResponse> updateLoanStatus(String userId, LoanStatusRequest request);

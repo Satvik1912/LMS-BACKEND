@@ -34,33 +34,52 @@ public class LoanStatusServiceImpl implements LoanStatusService {
     private LoanStatusRepository loanStatusRepository;
 
     @Override
-    public ResponseEntity<ApiResponse> createLoanStatus(@Valid LoanStatusRequest request) {
+    public ResponseEntity<ApiResponse> createLoanStatus(@Valid String udId) {
+
         try {
             // Fetch user details using udId from UserDetailsRepository
-            UserDetailsEntity user = userDetailsRepository.findByUdId(request.getUdId())
-                    .orElseThrow(() -> new RuntimeException("User not found with udId: " + request.getUdId()));
+            Optional<UserDetailsEntity> userOptional = userDetailsRepository.findByUdId(udId);
 
-            // Calculate loan amount
+            if (!userOptional.isPresent()) {
+                throw new RuntimeException("User does not exist");
+            }
+
+            UserDetailsEntity user = userOptional.get();
+
+            // Ensure the necessary data is present before calculating loan amount
+            if (user.getPrincipalAmount() == 0 || user.getInterest() == 0 || user.getTenure() == 0) {
+                throw new RuntimeException("Required data for loan calculation is missing");
+            }
+
+            // Calculate the loan amount (principal + interest over tenure)
             double principalAmount = user.getPrincipalAmount();
-            double loanAmount = principalAmount + (principalAmount * user.getInterest() * user.getTenure()) / 100;
+            double interestRate = user.getInterest();
+            double tenure = user.getTenure();
+            double loanAmount = principalAmount + (principalAmount * interestRate * tenure) / 100;
+
+            System.out.println("Checking ----> Principal: " + principalAmount + ", Loan Amount: " + loanAmount);
+
+
+            Optional<LoanStatusEntity> existingLoanStatus = loanStatusRepository.findByUdId(udId);
+            if (existingLoanStatus.isPresent()) {
+                throw new RuntimeException("Loan status already exists for this user");
+            }
 
             // Create and save LoanStatusEntity
             LoanStatusEntity loanStatusEntity = new LoanStatusEntity();
             loanStatusEntity.setUserId(user.getUserId());
-            loanStatusEntity.setUdId(user.getUdId());
+            loanStatusEntity.setUdId(udId);
             loanStatusEntity.setLoanAmount(loanAmount);
             loanStatusEntity.setLoanStatus(LoanStatus.pending);
 
             LoanStatusEntity savedLoanStatus = loanStatusDao.save(loanStatusEntity);
 
-            // Create response data
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("userId", savedLoanStatus.getUserId());
-            responseData.put("udId", savedLoanStatus.getUdId());
+            responseData.put("udId", udId);
             responseData.put("loanAmount", savedLoanStatus.getLoanAmount());
             responseData.put("loanStatus", savedLoanStatus.getLoanStatus());
 
-            // Return success response
             ApiResponse response = new ApiResponse(
                     HttpStatus.CREATED.value(),
                     "Loan status created successfully",
@@ -84,6 +103,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
                             false, null));
         }
     }
+
 
 
     @Override
