@@ -2,8 +2,8 @@ package com.cars24.lms_backend.data.dao;
 
 
 import com.cars24.lms_backend.data.entities.UserDetailsEntity;
-import com.cars24.lms_backend.data.req.CreateUserDetailsRequest;
-import com.cars24.lms_backend.data.res.UserDetailsResponse;
+import com.cars24.lms_backend.data.request.CreateUserDetailsRequest;
+import com.cars24.lms_backend.data.response.UserDetailsResponse;
 import org.springframework.stereotype.Service;
 
 @Service

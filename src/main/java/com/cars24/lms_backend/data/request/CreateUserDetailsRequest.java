@@ -1,27 +1,18 @@
-package com.cars24.lms_backend.data.res;
+package com.cars24.lms_backend.data.request;
+
 
 import lombok.Data;
 
 @Data
-public class UserDetailsResponse {
-
-    private String id;
+public class CreateUserDetailsRequest {
 
     private String userId;
-
     private String address;
-
     private String panNo;
-
     private String aadhar;
-
     private String incomeSource;
-
     private String incomeType;
-
     private int salary;
-
     private String collateral;
 
-    private String[] documents;
 }

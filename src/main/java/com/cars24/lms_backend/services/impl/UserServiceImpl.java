@@ -2,9 +2,10 @@ package com.cars24.lms_backend.services.impl;
 
 import com.cars24.lms_backend.data.dao.impl.UserDaoImpl;
 import com.cars24.lms_backend.data.entities.UsersEntity;
-import com.cars24.lms_backend.data.req.LoginReq;
-import com.cars24.lms_backend.data.req.SignUpReq;
-import com.cars24.lms_backend.data.res.ApiResponse;
+import com.cars24.lms_backend.data.request.LoginReq;
+import com.cars24.lms_backend.data.request.SignUpReq;
+import com.cars24.lms_backend.data.response.ApiResponse;
+import com.cars24.lms_backend.data.response.UserResponse;
 import com.cars24.lms_backend.services.UserService;
 import com.cars24.lms_backend.utility.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +57,6 @@ public class UserServiceImpl implements UserService {
         Optional<UsersEntity> existingUser = userDao.findByUsernameDao(user.getUsername());
 
         if (existingUser.isPresent()) {
-
-
             // Validate the password
             if ( passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
                 String userId= existingUser.get().getId();
@@ -71,6 +70,22 @@ public class UserServiceImpl implements UserService {
             }
         }
         return generateApiResponse(HttpStatus.BAD_REQUEST.value(),false, "User doesn't exists. Please SignUp", null,"APPUSER");
+    }
+
+    public ApiResponse getUser(String userId){
+
+        Optional<UsersEntity> userEntity = userDao.userResponse(userId);
+
+        UserResponse userResponse = new UserResponse();
+        if(userEntity.isPresent()){
+            userResponse.setName(userEntity.get().getName());
+            userResponse.setPhone(userEntity.get().getPhone());
+            userResponse.setUsername(userEntity.get().getUsername());
+            return generateApiResponse(HttpStatus.OK.value(), true, "User fetched successfully",userResponse ,"APPUSER");
+        }
+        return generateApiResponse(HttpStatus.BAD_REQUEST.value(),false, "User doesn't exists.", null,"APPUSER");
+
+
     }
 
     private ApiResponse generateApiResponse(int statusCode, boolean success, String message, Object data, String service){

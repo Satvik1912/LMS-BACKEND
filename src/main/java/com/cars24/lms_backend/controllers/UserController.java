@@ -1,9 +1,8 @@
 package com.cars24.lms_backend.controllers;
 
-import com.cars24.lms_backend.data.entities.UsersEntity;
-import com.cars24.lms_backend.data.req.LoginReq;
-import com.cars24.lms_backend.data.req.SignUpReq;
-import com.cars24.lms_backend.data.res.ApiResponse;
+import com.cars24.lms_backend.data.request.LoginReq;
+import com.cars24.lms_backend.data.request.SignUpReq;
+import com.cars24.lms_backend.data.response.ApiResponse;
 import com.cars24.lms_backend.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +28,13 @@ public class UserController {
     public ResponseEntity<ApiResponse> login(@RequestBody LoginReq user) {
         log.info("Received login request for: {}", user.getUsername());
         ApiResponse response = userService.loginUser(user);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/get-data/{userId}")
+    public ResponseEntity<ApiResponse> getUser(@PathVariable String userId){
+        log.info("[getUser: User Controller ]: Received fetch user details request");
+        ApiResponse response = userService.getUser(userId);
         return ResponseEntity.ok().body(response);
     }
 }

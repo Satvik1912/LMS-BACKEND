@@ -2,11 +2,10 @@ package com.cars24.lms_backend.services.impl;
 
 import com.cars24.lms_backend.data.dao.impl.UserDetailsDaoImpl;
 import com.cars24.lms_backend.data.entities.UserDetailsEntity;
-import com.cars24.lms_backend.data.req.CreateUserDetailsRequest;
-import com.cars24.lms_backend.data.res.ApiResponse;
-import com.cars24.lms_backend.data.res.UserDetailsResponse;
+import com.cars24.lms_backend.data.request.CreateUserDetailsRequest;
+import com.cars24.lms_backend.data.response.ApiResponse;
+import com.cars24.lms_backend.data.response.UserDetailsResponse;
 import com.cars24.lms_backend.services.UserDetailsEntityServices;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
