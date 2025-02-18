@@ -3,7 +3,6 @@ package com.cars24.lms_backend.data.dao.impl;
 import com.cars24.lms_backend.data.dao.UserDao;
 import com.cars24.lms_backend.data.entities.UsersEntity;
 import com.cars24.lms_backend.data.repositories.UserRepository;
-import com.cars24.lms_backend.data.req.SignUpReq;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,5 +25,10 @@ public class UserDaoImpl implements UserDao {
         log.info("Saving user: {}", user.getUsername());
         userRepository.save(user);
         log.info("User saved successfully.");
+    }
+
+    @Override
+    public Optional<UsersEntity> userResponse(String userId) {
+        return userRepository.findById(userId);
     }
 }

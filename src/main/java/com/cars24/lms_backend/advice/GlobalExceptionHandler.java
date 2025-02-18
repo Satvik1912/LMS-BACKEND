@@ -1,7 +1,7 @@
 package com.cars24.lms_backend.advice;
 
 
-import com.cars24.lms_backend.data.res.ApiResponse;
+import com.cars24.lms_backend.data.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

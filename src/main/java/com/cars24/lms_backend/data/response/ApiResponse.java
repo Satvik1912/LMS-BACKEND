@@ -1,4 +1,4 @@
-package com.cars24.lms_backend.data.res;
+package com.cars24.lms_backend.data.response;
 
 
 import lombok.Data;
