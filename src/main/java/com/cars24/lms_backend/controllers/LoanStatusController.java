@@ -24,7 +24,11 @@ public class LoanStatusController {
     public ResponseEntity<ApiResponse>  createLoanStatus(@Valid @PathVariable String udId) {
         return loanStatusService.createLoanStatus(udId);
     }
-
+    @GetMapping("/all")
+    public ResponseEntity<List<LoanStatusResponse>> getAllLoanStatus() {
+        List<LoanStatusResponse> responseList = loanStatusService.getAllLoanStatus();
+        return responseList.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(responseList);
+    }
     @GetMapping("/{userId}")
     public ResponseEntity<List<LoanStatusResponse>> getLoanStatus(@PathVariable String userId) {
         List<LoanStatusResponse> responseList = loanStatusService.getLoanStatusByUserId(userId);

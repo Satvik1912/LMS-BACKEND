@@ -128,6 +128,29 @@ public class LoanStatusServiceImpl implements LoanStatusService {
         }).collect(Collectors.toList());
     }
 
+    public List<LoanStatusResponse> getAllLoanStatus() {
+        List<LoanStatusEntity> loanStatuses = loanStatusRepository.findAll();
+
+        if (loanStatuses.isEmpty()) {
+            return (List<LoanStatusResponse>) ResponseEntity.noContent().build();
+        }
+
+        List<LoanStatusResponse> responseList = loanStatuses.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responseList).getBody();
+    }
+
+    private LoanStatusResponse mapToResponse(LoanStatusEntity entity) {
+        LoanStatusResponse response = new LoanStatusResponse();
+        response.setId(entity.getId());
+        response.setUserId(entity.getUserId());
+        response.setUdId(entity.getUdId());
+        response.setLoanAmount((int) entity.getLoanAmount());
+        response.setLoanStatus(entity.getLoanStatus());
+        return response;
+    }
 
 
     @Override
