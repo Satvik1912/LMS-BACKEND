@@ -20,9 +20,9 @@ public class LoanStatusController {
     @Autowired
     private LoanStatusService loanStatusService;
 
-    @PostMapping("/{udId}")
-    public ResponseEntity<ApiResponse>  createLoanStatus(@Valid @PathVariable String udId) {
-        return loanStatusService.createLoanStatus(udId);
+    @PostMapping("/{lrId}")
+    public ResponseEntity<ApiResponse>  createLoanStatus(@Valid @PathVariable String lrId) {
+        return loanStatusService.createLoanStatus(lrId);
     }
     @GetMapping("/all")
     public ResponseEntity<List<LoanStatusResponse>> getAllLoanStatus() {

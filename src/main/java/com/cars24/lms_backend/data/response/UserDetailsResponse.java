@@ -24,8 +24,8 @@ public class UserDetailsResponse {
     private String collateral;
 
     private String[] documents;
-    private double principalAmount;
-    private int tenure;
-    private double interest;
+//    private double principalAmount;
+//    private int tenure;
+//    private double interest;
 
 }

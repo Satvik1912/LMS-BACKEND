@@ -21,6 +21,6 @@ public class LoanRequestEntity {
 
     private int principalAmount;
 
-    private double interest;
 
+    private double interest;
 }

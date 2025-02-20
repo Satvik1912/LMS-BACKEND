@@ -39,11 +39,11 @@ public class LoanStatusServiceImpl implements LoanStatusService {
     private LoanRequestRepository loanRequestRepository;
 
     @Override
-    public ResponseEntity<ApiResponse> createLoanStatus(@Valid String udId) {  //ITS NOT UDUID ITS LRID
+    public ResponseEntity<ApiResponse> createLoanStatus(@Valid String lrId) {  //ITS NOT UDUID ITS LRID
 
         try {
             // Fetch user details using udId from UserDetailsRepository
-            Optional<LoanRequestEntity> userOptional = loanRequestRepository.findById(udId);
+            Optional<LoanRequestEntity> userOptional = loanRequestRepository.findById(lrId);
 
             if (userOptional.isEmpty()) {
                 throw new RuntimeException("User does not exist");
@@ -62,10 +62,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
             double tenure = user.getTenure();
             double loanAmount = principalAmount + (principalAmount * interestRate * tenure) / 100;
 
-            System.out.println("Checking ----> Principal: " + principalAmount + ", Loan Amount: " + loanAmount);
-
-
-            Optional<LoanStatusEntity> existingLoanStatus = loanStatusRepository.findByUdId(udId);
+            Optional<LoanStatusEntity> existingLoanStatus = loanStatusRepository.findByLrId(lrId);
             if (existingLoanStatus.isPresent()) {
                 throw new RuntimeException("Loan status already exists for this user");
             }
@@ -73,7 +70,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
             // Create and save LoanStatusEntity
             LoanStatusEntity loanStatusEntity = new LoanStatusEntity();
             loanStatusEntity.setUserId(user.getUserId());
-            loanStatusEntity.setUdId(udId);
+            loanStatusEntity.setLrId(lrId);
             loanStatusEntity.setLoanAmount(loanAmount);
             loanStatusEntity.setLoanStatus(LoanStatus.pending);
 
@@ -81,7 +78,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
 
             Map<String, Object> responseData = new HashMap<>();
             responseData.put("userId", savedLoanStatus.getUserId());
-            responseData.put("udId", udId);
+            responseData.put("LrId", lrId);
             responseData.put("loanAmount", savedLoanStatus.getLoanAmount());
             responseData.put("loanStatus", savedLoanStatus.getLoanStatus());
 
@@ -126,7 +123,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
             LoanStatusResponse response = new LoanStatusResponse();
             response.setId(entity.getId());
             response.setUserId(entity.getUserId());
-            response.setUdId(entity.getUdId());
+            response.setLrId(entity.getLrId());
             response.setLoanAmount((int) entity.getLoanAmount());
             response.setLoanStatus(entity.getLoanStatus());
             return response;
@@ -151,7 +148,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
         LoanStatusResponse response = new LoanStatusResponse();
         response.setId(entity.getId());
         response.setUserId(entity.getUserId());
-        response.setUdId(entity.getUdId());
+        response.setLrId(entity.getLrId());
         response.setLoanAmount((int) entity.getLoanAmount());
         response.setLoanStatus(entity.getLoanStatus());
         return response;
@@ -159,9 +156,9 @@ public class LoanStatusServiceImpl implements LoanStatusService {
 
 
     @Override
-    public ResponseEntity<ApiResponse> updateLoanStatus(String udId, LoanStatusRequest request) {
+    public ResponseEntity<ApiResponse> updateLoanStatus(String lrId, LoanStatusRequest request) {
         // Check if udId exists
-        if (!loanStatusRepository.existsByUdId(udId)) {
+        if (!loanStatusRepository.existsByLrId(lrId)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse(HttpStatus.BAD_REQUEST.value(),
                             "User detail id does not exist",
@@ -170,7 +167,7 @@ public class LoanStatusServiceImpl implements LoanStatusService {
         }
 
         try {
-            Optional<LoanStatusEntity> loanStatusEntity = loanStatusRepository.findByUdId(udId);
+            Optional<LoanStatusEntity> loanStatusEntity = loanStatusRepository.findByLrId(lrId);
 
             if (loanStatusEntity.isPresent()) {
                 LoanStatusEntity entity = loanStatusEntity.get();
