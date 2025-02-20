@@ -18,4 +18,6 @@ public interface LoanStatusService {
 
     ResponseEntity<ApiResponse> updateLoanStatus(String userId, LoanStatusRequest request);
     void deleteLoanStatus(String id);
+
+    List<LoanStatusResponse> getAllLoanStatus();
 }

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class LoanStatusResponse {
     private String id;
-    private String udId;
+    private String lrId;
     private String userId;
     private int loanAmount;
     private LoanStatus loanStatus;

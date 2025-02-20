@@ -23,13 +23,13 @@ public class JwtUtil {
                 .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key) // ✅ Correct method for JJWT 0.12.6
+                .signWith(key)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jws<Claims> claims = Jwts.parser() // ✅ FIXED: Use correct JJWT 0.12.6 API
+            Jws<Claims> claims = Jwts.parser()
                     .verifyWith((SecretKey) key)
                     .build()
                     .parseSignedClaims(token);
@@ -42,7 +42,7 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return Jwts.parser()
-                .verifyWith((SecretKey) key) // ✅ FIXED: Correct method for verification
+                .verifyWith((SecretKey) key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()

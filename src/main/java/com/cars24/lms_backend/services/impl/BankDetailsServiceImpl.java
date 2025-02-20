@@ -2,9 +2,11 @@ package com.cars24.lms_backend.services.impl;
 
 import com.cars24.lms_backend.data.dao.BankDetailsDao;
 import com.cars24.lms_backend.data.entities.BankDetailsEntity;
+import com.cars24.lms_backend.data.repositories.BankDetailsRepository;
 import com.cars24.lms_backend.data.repositories.UserDetailsRepository;
 import com.cars24.lms_backend.data.request.BankDetailsRequest;
 import com.cars24.lms_backend.data.response.ApiResponse;
+import com.cars24.lms_backend.data.response.BankDetailsResponse;
 import com.cars24.lms_backend.services.BankDetailsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class BankDetailsServiceImpl implements BankDetailsService {
 
     private final BankDetailsDao bankDetailsDao;
     private final UserDetailsRepository userRepository;
+    private final BankDetailsRepository bankDetailsRepository;
 
     @Override
     public ResponseEntity<ApiResponse> createBankDetails(@Valid BankDetailsRequest request) {
@@ -103,5 +108,27 @@ public class BankDetailsServiceImpl implements BankDetailsService {
                             null
                     ));
         }
+    }
+    public List<BankDetailsResponse> getAllBankDetails() {
+        List<BankDetailsEntity> bankDetails = bankDetailsRepository.findAll(); // Use instance, not class
+
+        if (bankDetails.isEmpty()) {
+            return List.of(); // Return an empty list instead of ResponseEntity
+        }
+
+        return bankDetails.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    private BankDetailsResponse mapToResponse(BankDetailsEntity entity) {
+        BankDetailsResponse response = new BankDetailsResponse();
+        response.setBId(entity.getBId());
+        response.setUserId(entity.getUserId());
+        response.setAccountHolderName(entity.getAccountHolderName());
+        response.setAccountNo(entity.getAccountNo());
+        response.setIfsc_code(entity.getIfsc_code());
+        response.setBankName(entity.getBankName());
+        return response;
     }
 }

@@ -8,8 +8,7 @@ import lombok.Data;
 public class LoanStatusRequest {
 
     private String userId;
-
-    private String udId;
+    private String lrId;
 
     private double loanAmount;
 

@@ -17,11 +17,10 @@ public class LoanStatusEntity {
 
     @Id
     private String id; // MongoDB will generate the unique ID automatically
-    @Field("udId")
-    private String udId;
     @Field("userId")
     private String userId;
-
+    @Field ("lrId")
+    private String lrId;
     @Field("loanAmount")
     private double loanAmount;
 

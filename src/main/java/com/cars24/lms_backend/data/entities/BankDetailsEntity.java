@@ -27,7 +27,7 @@ public class BankDetailsEntity {
 
     @NotNull(message = "IFSC code cannot be null")
     @Pattern(regexp = "^[A-Za-z0-9]{1,12}$", message = "IFSC code must be alphanumeric and up to 12 characters")
-    @Field("IFSC_code")
+    @Field("ifsc_code")
     private String ifsc_code;
 
     @NotNull(message = "Bank name cannot be null")
