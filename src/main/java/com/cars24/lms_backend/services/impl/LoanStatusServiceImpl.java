@@ -1,9 +1,11 @@
 package com.cars24.lms_backend.services.impl;
 
 import com.cars24.lms_backend.data.dao.LoanStatusDao;
+import com.cars24.lms_backend.data.entities.LoanRequestEntity;
 import com.cars24.lms_backend.data.entities.LoanStatusEntity;
 import com.cars24.lms_backend.data.entities.UserDetailsEntity;
 import com.cars24.lms_backend.data.enums.LoanStatus;
+import com.cars24.lms_backend.data.repositories.LoanRequestRepository;
 import com.cars24.lms_backend.data.repositories.LoanStatusRepository;
 import com.cars24.lms_backend.data.repositories.UserDetailsRepository;
 import com.cars24.lms_backend.data.request.LoanStatusRequest;
@@ -33,18 +35,21 @@ public class LoanStatusServiceImpl implements LoanStatusService {
     @Autowired
     private LoanStatusRepository loanStatusRepository;
 
+    @Autowired
+    private LoanRequestRepository loanRequestRepository;
+
     @Override
-    public ResponseEntity<ApiResponse> createLoanStatus(@Valid String udId) {
+    public ResponseEntity<ApiResponse> createLoanStatus(@Valid String udId) {  //ITS NOT UDUID ITS LRID
 
         try {
             // Fetch user details using udId from UserDetailsRepository
-            Optional<UserDetailsEntity> userOptional = userDetailsRepository.findByUdId(udId);
+            Optional<LoanRequestEntity> userOptional = loanRequestRepository.findById(udId);
 
-            if (!userOptional.isPresent()) {
+            if (userOptional.isEmpty()) {
                 throw new RuntimeException("User does not exist");
             }
 
-            UserDetailsEntity user = userOptional.get();
+            LoanRequestEntity user = userOptional.get();
 
             // Ensure the necessary data is present before calculating loan amount
             if (user.getPrincipalAmount() == 0 || user.getInterest() == 0 || user.getTenure() == 0) {

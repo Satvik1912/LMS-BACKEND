@@ -34,17 +34,17 @@ public class UserDetailsEntity {
     @Min(value = 5000, message = "Salary must be at least 5000")
     private int salary;
 
-    private String collateral;
-
-    private String[] documents;
-
-    @Min(value = 50000, message = "Principal amount must be at least 50,000")
-    private double principalAmount;
-
-    @Min(value = 1, message = "Tenure must be at least 1 year")
-    private int tenure;
-
-    @DecimalMin(value = "0.1", message = "Interest rate must be greater than 0%")
-    @DecimalMax(value = "100.0", message = "Interest rate cannot exceed 100%")
-    private double interest;
+//    private String collateral;
+//
+//    private String[] documents;
+//
+//    @Min(value = 50000, message = "Principal amount must be at least 50,000")
+//    private double principalAmount;
+//
+//    @Min(value = 1, message = "Tenure must be at least 1 year")
+//    private int tenure;
+//
+//    @DecimalMin(value = "0.1", message = "Interest rate must be greater than 0%")
+//    @DecimalMax(value = "100.0", message = "Interest rate cannot exceed 100%")
+//    private double interest;
 }
