@@ -36,14 +36,21 @@ public class UserDetailsDaoImpl implements UserDetailsDao {
         //also we have to ensure that we don't insert multiple documents of same user (to be implemented later)
 
         Optional<UsersEntity> user = userRepo.findById(userDetailsRequest.getUserId());
+        boolean userDetailsAlreadyExists = userDetailsRepository.existsByUserId(userDetailsRequest.getUserId());
 
-        if(user.isPresent()){
+        if(user.isPresent() ){
 
-            ObjectMapper objectMapper =new ObjectMapper();
-            UserDetailsEntity userDetails = objectMapper.convertValue(userDetailsRequest,UserDetailsEntity.class);
-            userDetails.setDocuments(new String[0]);
+            if(!userDetailsAlreadyExists){
+                ObjectMapper objectMapper =new ObjectMapper();
+                UserDetailsEntity userDetails = objectMapper.convertValue(userDetailsRequest,UserDetailsEntity.class);
 
-            return userDetailsRepository.save(userDetails);
+
+                return userDetailsRepository.save(userDetails);
+            }else{
+                throw new RuntimeException("User details already exists");
+            }
+
+
         }else{
             throw new RuntimeException("User doesn't exists");
         }

@@ -2,6 +2,7 @@ package com.cars24.lms_backend.services.impl;
 
 import com.cars24.lms_backend.data.dao.impl.UserDaoImpl;
 import com.cars24.lms_backend.data.entities.UsersEntity;
+import com.cars24.lms_backend.data.enums.UserRoles;
 import com.cars24.lms_backend.data.request.LoginReq;
 import com.cars24.lms_backend.data.request.SignUpReq;
 import com.cars24.lms_backend.data.response.ApiResponse;
@@ -60,10 +61,14 @@ public class UserServiceImpl implements UserService {
             // Validate the password
             if ( passwordEncoder.matches(user.getPassword(), existingUser.get().getPassword())) {
                 String userId= existingUser.get().getId();
+                UserRoles userRole=existingUser.get().getRoles();
+                String name=existingUser.get().getName();
                 String token = jwtUtil.generateToken(user.getUsername());
                 Map<String, Object> responseData = new HashMap<>();
                 responseData.put("token", token);
                 responseData.put("userId",userId);
+                responseData.put("name",name);
+                responseData.put("role",userRole);
                 return generateApiResponse(HttpStatus.OK.value(), true, "User Logged in successfully",responseData ,"APPUSER");
             } else {
                 throw new RuntimeException("Invalid Username or Password");
